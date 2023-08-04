@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './Popup.css';
 import { Configuration, OpenAIApi } from 'openai';
