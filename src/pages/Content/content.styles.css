@@ -1,0 +1,7 @@
+.extension-icon {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 1.4rem;
+  color: chartreuse;
+  cursor: pointer;
+}
