@@ -1,46 +1,27 @@
-// import { printLine } from './modules/print';
+const inputElements = document.querySelectorAll('input[type="text"]');
+if (inputElements) {
+  updateUi(inputElements);
+}
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (!request.type === 'newTab') return;
-  const inputElements = document.querySelectorAll('input[type="text"]');
-  if (inputElements) {
-    updateUi(inputElements);
-  }
-});
-
-const getPageQuestions = (inputElements) => {
-  const questions = [];
-
+function updateUi(inputElements) {
   inputElements.forEach((inputElement) => {
     const label = document.querySelector(`label[for="${inputElement.id}"]`);
-    questions.push(label.textContent);
+    const extensionIcon = document.createElement('img');
+    extensionIcon.src = chrome.runtime.getURL('icon-34.png');
+    extensionIcon.classList.add('icon');
+    label.appendChild(extensionIcon);
+    extensionIcon.addEventListener(
+      'click',
+      addChatGptResponce.bind(inputElement, label.textContent)
+    );
   });
-  return questions;
-};
+}
 
-const updateUi = (inputElements) => {
-  inputElements.forEach((inputElement) => {
-    const label = document.querySelector(`label[for="${inputElement.id}"]`);
-    const plusIcon = document.createElement('span');
-    plusIcon.textContent = '+';
-    plusIcon.classList.add('extension-icon');
-    label.appendChild(plusIcon);
-    plusIcon.addEventListener('click', addQuestionHandler.bind(null, label));
+async function addChatGptResponce(question) {
+  const responce = await chrome.runtime.sendMessage({
+    type: 'newQuestion',
+    question,
   });
-};
 
-const addQuestionHandler = async (label) => {
-  const question = label.textContent;
-  const newQuestion = {
-    id: label.getAttribute('for'),
-    text: question.substring(0, question.length - 1),
-  };
-  const { questions: oldQuestions } = await chrome.storage.local.get(
-    'questions'
-  );
-
-  const updatedQuestions = oldQuestions.length
-    ? [newQuestion, ...oldQuestions]
-    : [newQuestion];
-  await chrome.storage.local.set({ questions: updatedQuestions });
-};
+  this.value = responce;
+}

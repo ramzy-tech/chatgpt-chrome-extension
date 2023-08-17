@@ -4,10 +4,6 @@
   "name": "Ai Helper",
   "description": "Use Ai to help you answer text inputs questions",
   "background": { "service_worker": "background.bundle.js" },
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
-  },
 
   "icons": {
     "128": "icon-128.png"
@@ -22,7 +18,7 @@
   "web_accessible_resources": [
     {
       "resources": ["content.styles.css", "icon-128.png", "icon-34.png"],
-      "matches": []
+      "matches": ["http://*/*", "https://*/*", "<all_urls>"]
     }
   ],
   "permissions": ["storage"]
