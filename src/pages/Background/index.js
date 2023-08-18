@@ -1,8 +1,7 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponce) => {
   if (message.type === 'newQuestion') {
     const headers = {
-      Authorization:
-        'Bearer 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',
+      Authorization: 'Bearer enter your token',
       'Content-Type': 'application/json',
     };
 
@@ -21,7 +20,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponce) => {
         if (!res.ok) sendResponce('Error during fetching');
         res.json();
       })
-      .then((answer) => sendResponce(answer));
+      .then((answer) => sendResponce(answer))
+      .catch((err) => sendResponce(err.message));
   }
   return true;
 });
