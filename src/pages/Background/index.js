@@ -1,4 +1,4 @@
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponce) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponce) => {
   if (message.type === 'newQuestion') {
     const headers = {
       Authorization:
@@ -12,16 +12,16 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponce) => {
       temperature: 0.7,
     });
 
-    try {
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers,
-        body,
-      });
-      const data = await res.json();
-    } catch (error) {
-      sendResponce('Error while fetching chatgpt responce');
-    }
-    sendResponce("Don't Know yet");
+    fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers,
+      body,
+    })
+      .then((res) => {
+        if (!res.ok) sendResponce('Error during fetching');
+        res.json();
+      })
+      .then((answer) => sendResponce(answer));
   }
+  return true;
 });

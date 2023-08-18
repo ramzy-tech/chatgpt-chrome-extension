@@ -18,6 +18,8 @@ function updateUi(inputElements) {
 }
 
 async function addChatGptResponce(question) {
+  this.value = 'Loading...';
+
   const responce = await chrome.runtime.sendMessage({
     type: 'newQuestion',
     question,
